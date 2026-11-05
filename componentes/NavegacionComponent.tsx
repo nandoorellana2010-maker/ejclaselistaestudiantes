@@ -6,14 +6,14 @@ import ListaEstudiante from '../pages/ListaEstudiante'
 import Home from '../pages/Home'
 
 export default function NavegacionComponent() {
-    const tab= createBottomTabNavigator()
+    const Tab = createBottomTabNavigator()
     
   return (
     <NavigationContainer>
-      <tab.Navigator>
-        <tab.Screen component={Home} name='Home'></tab.Screen>
-        <tab.Screen component={ListaEstudiante} name='Lista Estudiante'></tab.Screen>
-        </tab.Navigator>
+      <Tab.Navigator>
+        <Tab.Screen component={Home} name='Home'></Tab.Screen>
+        <Tab.Screen component={ListaEstudiante} name='Lista Estudiante'></Tab.Screen>
+      </Tab.Navigator>
     </NavigationContainer>
   )
 }

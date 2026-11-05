@@ -1,36 +1,67 @@
-import { View, Text, TextInput, Button } from 'react-native'
-const {estudianteLista, agregarEstudiante} = useContextEstudiante()
-
-import React, { useContext, useEffect, useState } from 'react'
+import { Alert, Button, StyleSheet, Text, TextInput, View } from 'react-native'
+import React, { useState } from 'react'
 import { useContextEstudiante } from '../providers/ProviderEstudiante'
 import { Estudiante } from '../modelos/Estudiante'
+import ListaEstudiante from './ListaEstudiante'
 
 export default function Home() {
-    const {estudianteLista, agregarEstudiante} = useContextEstudiante()
+    const { estudianteLista, agregarEstudiante } = useContextEstudiante()
 
-    const [nombre, setNombre]=useState('')
+    const [nombre, setNombre] = useState('')
 
-    function agregar(){
-        let estudiante : Estudiante={
-            id: estudianteLista.length + 1,
-                nombre : nombre
+    function agregar() {
+        const nombreEstudiante = nombre.trim()
+        if (!nombreEstudiante) {
+            Alert.alert('Nombre requerido', 'Ingresa el nombre del estudiante.')
+            return
         }
+
+        const siguienteId = estudianteLista.reduce(
+            (mayorId, estudiante) => Math.max(mayorId, estudiante.id),
+            0,
+        ) + 1
+        const estudiante: Estudiante = {
+            id: siguienteId,
+            nombre: nombreEstudiante,
+        }
+
         agregarEstudiante(estudiante)
+        setNombre('')
     }
 
-    useEffect(()=>{
-        console.log(estudianteLista)
-    },[estudianteLista])
-
-  return (
-    <View>
-      <Text>Agregar Estudiantes</Text>
-      <TextInput placeholder='Ingrese el Nombre del Estudiante'
-      value={nombre}
-      onChangeText={setNombre}
-      ></TextInput>
-      
-      <Button title='Guardar' onPress= {agregar}/>
-    </View>
-  )
+    return (
+        <View style={styles.container}>
+            <Text style={styles.title}>Agregar estudiante</Text>
+            <TextInput
+                style={styles.input}
+                placeholder="Ingrese el nombre del estudiante"
+                value={nombre}
+                onChangeText={setNombre}
+                onSubmitEditing={agregar}
+                returnKeyType="done"
+            />
+            <Button title="Guardar" onPress={agregar} />
+            <ListaEstudiante />
+        </View>
+    )
 }
+
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        paddingTop: 16,
+    },
+    title: {
+        fontSize: 20,
+        fontWeight: '600',
+        paddingHorizontal: 16,
+    },
+    input: {
+        borderColor: '#888',
+        borderRadius: 6,
+        borderWidth: 1,
+        margin: 16,
+        paddingHorizontal: 12,
+        paddingVertical: 10,
+    },
+})
