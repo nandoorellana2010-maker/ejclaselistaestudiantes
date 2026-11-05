@@ -41,7 +41,6 @@ export default function Home() {
                 returnKeyType="done"
             />
             <Button title="Guardar" onPress={agregar} />
-            <ListaEstudiante />
         </View>
     )
 }
