@@ -1,4 +1,4 @@
-export interface Estudiantes{
+export interface Estudiante{
     id: number
     nombre: String
 }
